@@ -5,6 +5,12 @@ VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelCenter.Web", "HotelCenter\HotelCenter.Web.csproj", "{564984A1-E2D2-41B1-A333-D008273A5AC3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelCenter.Application", "HotelCenter.Application\HotelCenter.Application.csproj", "{521FDFCC-3464-417D-A9C2-071592BCB18B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelCenter.Domain", "HotelCenter.Domain\HotelCenter.Domain.csproj", "{D01602AD-978E-4D05-92FB-E6346D655F9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelCenter.Infrastructure", "HotelCenter.Infrastructure\HotelCenter.Infrastructure.csproj", "{EC570B5D-0220-4F50-A352-9BE23851DDF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{564984A1-E2D2-41B1-A333-D008273A5AC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{564984A1-E2D2-41B1-A333-D008273A5AC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{564984A1-E2D2-41B1-A333-D008273A5AC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{521FDFCC-3464-417D-A9C2-071592BCB18B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{521FDFCC-3464-417D-A9C2-071592BCB18B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{521FDFCC-3464-417D-A9C2-071592BCB18B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{521FDFCC-3464-417D-A9C2-071592BCB18B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D01602AD-978E-4D05-92FB-E6346D655F9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D01602AD-978E-4D05-92FB-E6346D655F9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D01602AD-978E-4D05-92FB-E6346D655F9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D01602AD-978E-4D05-92FB-E6346D655F9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC570B5D-0220-4F50-A352-9BE23851DDF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC570B5D-0220-4F50-A352-9BE23851DDF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC570B5D-0220-4F50-A352-9BE23851DDF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC570B5D-0220-4F50-A352-9BE23851DDF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

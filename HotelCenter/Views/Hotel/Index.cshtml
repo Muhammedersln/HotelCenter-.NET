@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Hotel>
+
+
+<div class="w-100 card border-0 p-4">
+    <div class="card-header bg-gradient bg-success m-lg-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Otel Listesi</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body border p-4">
+        <div class="row pb-3">
+            <div class="col-6 offset-6 text-end mb-2">
+                <a asp-controller="Hotel" asp-action="Create" class="btn btn-secondary"><i class="bi bi-plus-circle"></i> Yeni Otel Ekle</a>
+            </div>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>İsim</th>
+                    <th>Fiyat</th>
+                    <th>Sqft</th>
+                    <th>Doluluk</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Price</td>
+                        <td>@item.Sqft</td>
+                        <td>@item.Occupancy</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
