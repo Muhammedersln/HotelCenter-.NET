@@ -21,6 +21,7 @@
                     <th>Fiyat</th>
                     <th>Sqft</th>
                     <th>Doluluk</th>
+                    <th></th>
                 </tr>
 
             </thead>
@@ -32,6 +33,12 @@
                         <td>@item.Price</td>
                         <td>@item.Sqft</td>
                         <td>@item.Occupancy</td>
+                        <td>
+                            <div class="w-100 btn-group" role="group">
+                                    <a asp-controller="Hotel" asp-action="Update" asp-route-hotelId="@item.Id" class="btn btn-success mx-2"><i class="bi bi-pencil-square"></i> Düzenle</a>
+                                    <a asp-controller="Hotel" asp-action="Delete" asp-route-hotelId="@item.Id" class="btn btn-danger mx-2"><i class="bi bi-trash-fill"></i> Sil</a>
+                            </div>
+                        </td>
                     </tr>
                 }
 
