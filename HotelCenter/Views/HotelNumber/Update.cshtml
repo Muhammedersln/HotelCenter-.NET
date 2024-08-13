@@ -3,24 +3,25 @@
     <div class="card-header bg-gradient bg-success m-lg-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="text-white py-2">Bungalov Ekle</h2>
+                <h2 class="text-white py-2">Bungalov Düzenle</h2>
             </div>
         </div>
     </div>
 
     <div class="card-body border p-4">
         <form method="post" class="row">
+            <input asp-for="HotelNumber.Hotel_Number" hidden/>
             <div class="p-3">
                 @* <div asp-validation-summary="All"></div> *@
                 <div class="form-floating py-1 col-12">
                     <select asp-for="@Model.HotelNumber.HotelId" asp-items="@Model.HotelList" class="form-select border shadow">
                         <option disabled selected>--Bungalov Seçin--</option>
                     </select>
-                    <label asp-for="HotelNumber.HotelId" class="ms-2">Otel Id</label>
+                    <label asp-for="HotelNumber.HotelId" disabled class="ms-2">Bungalov Id</label>
                     <span asp-validation-for="HotelNumber.HotelId" class="text-danger"></span>
                 </div>
                 <div class="form-floating py-1 col-12">
-                    <input asp-for="HotelNumber.Hotel_Number" class="form-control border shadow" />
+                    <input asp-for="HotelNumber.Hotel_Number" disabled class="form-control border shadow" />
                     <label asp-for="HotelNumber.Hotel_Number" class="ms-2">Bungalov Numarası</label>
                     <span asp-validation-for="HotelNumber.Hotel_Number" class="text-danger"></span>
 

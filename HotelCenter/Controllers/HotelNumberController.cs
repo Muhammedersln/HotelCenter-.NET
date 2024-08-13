@@ -1,6 +1,9 @@
 ﻿using HotelCenter.Domain.Entities;
 using HotelCenter.Infrastructure.Data;
+using HotelCenter.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace HotelCenter.Web.Controllers
 {
@@ -15,73 +18,113 @@ namespace HotelCenter.Web.Controllers
 
         public IActionResult Index()
         {
-            var hotelsNumbers = _context.HotelNumbers.ToList();
+            var hotelsNumbers = _context.HotelNumbers.Include(h => h.Hotel).ToList();
             return View(hotelsNumbers);
         }
         public IActionResult Create()
         {
-            return View();
-        }
-        [HttpPost]
-        public IActionResult Create(HotelNumber hotel)
-        {
-            ModelState.Remove("Hotel");
-            if (ModelState.IsValid)
+            HotelNumberVM hotelNumberVM = new HotelNumberVM
             {
-                _context.HotelNumbers.Add(hotel);
+                HotelList = _context.Hotels.ToList().Select(h => new SelectListItem
+                {
+                    Text = h.Name,
+                    Value = h.Id.ToString()
+                })
+            };
+            return View(hotelNumberVM);
+        }
+
+        [HttpPost]
+        public IActionResult Create(HotelNumberVM hotel)
+        {
+            bool roomNumberExists = _context.HotelNumbers.Any(h => h.Hotel_Number == hotel.HotelNumber.Hotel_Number);
+            if (ModelState.IsValid && !roomNumberExists)
+            {
+                _context.HotelNumbers.Add(hotel.HotelNumber);
                 _context.SaveChanges();
                 TempData["success"] = $"Otel başarılı şekilde eklendi.";
                 return RedirectToAction("Index");
             }
-            TempData["error"] = "Otel eklenirken bir hata oluştu.";
+            if (roomNumberExists)
+            {
+                TempData["error"] = "Bu oda numarası zaten mevcut.";
+            }
+
+            hotel.HotelList = _context.Hotels.ToList().Select(h => new SelectListItem
+            {
+                Text = h.Name,
+                Value = h.Id.ToString()
+            });
+
             return View(hotel);
         }
 
-        public IActionResult Update(int hotelId)
+        public IActionResult Update(int hotelNumberId)
         {
-            Hotel? hotel = _context.Hotels.FirstOrDefault(h => h.Id == hotelId);
-            if (hotel == null)
+            HotelNumberVM hotelNumberVM = new HotelNumberVM
+            {
+                HotelList = _context.Hotels.ToList().Select(h => new SelectListItem
+                {
+                    Text = h.Name,
+                    Value = h.Id.ToString()
+                }),
+                HotelNumber = _context.HotelNumbers.FirstOrDefault(h => h.Hotel_Number == hotelNumberId)
+            };
+            if (hotelNumberVM.HotelNumber == null)
             { 
                 return RedirectToAction("Error","Home");
             }
-            return View(hotel);
+            return View(hotelNumberVM);
         }
         
         [HttpPost]
-        public IActionResult Update(Hotel hotel)
+        public IActionResult Update(HotelNumberVM hotelNumberVM)
         {
-            if (ModelState.IsValid && hotel.Id>0)
+            if (ModelState.IsValid)
             {
-                _context.Hotels.Update(hotel);
+                _context.HotelNumbers.Update(hotelNumberVM.HotelNumber);
                 _context.SaveChanges();
-                TempData["success"] = $"{hotel.Name} başarılı şekilde güncellendi.";
+                TempData["success"] = "Bungalov başarılı şekilde güncellendi.";
                 return RedirectToAction("Index");
             }
-            TempData["error"] = "Güncellenecek otel bulunamadı.";
-            return View(hotel);
+            hotelNumberVM.HotelList = _context.Hotels.ToList().Select(h => new SelectListItem
+            {
+                Text = h.Name,
+                Value = h.Id.ToString()
+            });
+            return View(hotelNumberVM);
         }
-        public IActionResult Delete(int hotelId)
+
+        public IActionResult Delete(int hotelNumberId)
         {
-            Hotel? hotel = _context.Hotels.FirstOrDefault(h => h.Id == hotelId);
-            if (hotel == null)
+            HotelNumberVM hotelNumberVM = new HotelNumberVM
+            {
+                HotelList = _context.Hotels.ToList().Select(h => new SelectListItem
+                {
+                    Text = h.Name,
+                    Value = h.Id.ToString()
+                }),
+                HotelNumber = _context.HotelNumbers.FirstOrDefault(h => h.Hotel_Number == hotelNumberId)
+            };
+            if (hotelNumberVM.HotelNumber == null)
             {
                 return RedirectToAction("Error", "Home");
             }
-            return View(hotel);
+            return View(hotelNumberVM);
         }
         [HttpPost]
-        public IActionResult Delete(Hotel hotel)
+        public IActionResult Delete(HotelNumberVM hotelNumberVM)
         {
-            Hotel? hotelToDelete = _context.Hotels.FirstOrDefault(h => h.Id == hotel.Id);
+            HotelNumber? hotelToDelete = _context.HotelNumbers.FirstOrDefault(h => h.Hotel_Number == hotelNumberVM.HotelNumber.Hotel_Number);
             if (hotelToDelete is not null)
             {
-                _context.Hotels.Remove(hotelToDelete);
+                _context.HotelNumbers.Remove(hotelToDelete);
                 _context.SaveChanges();
-                TempData["success"] = $"{hotelToDelete.Name} başarılı şekilde silinidi.";
+                TempData["success"] = "Bungalov numarası başarılı şekilde silinidi.";
                 return RedirectToAction("Index");
             }
             TempData["error"] = "Silinecek otel bulunamadı.";
-            return View(hotel);
+            return View();
         }
     }
 
