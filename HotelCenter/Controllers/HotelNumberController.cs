@@ -1,4 +1,5 @@
-﻿using HotelCenter.Domain.Entities;
+﻿using HotelCenter.Application.Common.Interfaces;
+using HotelCenter.Domain.Entities;
 using HotelCenter.Infrastructure.Data;
 using HotelCenter.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -9,23 +10,23 @@ namespace HotelCenter.Web.Controllers
 {
     public class HotelNumberController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        
-        public HotelNumberController(ApplicationDbContext context)
+        private readonly IUnitOfWork _unitOfWork;
+
+        public HotelNumberController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            var hotelsNumbers = _context.HotelNumbers.Include(h => h.Hotel).ToList();
+            var hotelsNumbers = _unitOfWork.HotelNumber.GetAll(includeProperties: "Hotel");
             return View(hotelsNumbers);
         }
         public IActionResult Create()
         {
             HotelNumberVM hotelNumberVM = new HotelNumberVM
             {
-                HotelList = _context.Hotels.ToList().Select(h => new SelectListItem
+                HotelList = _unitOfWork.Hotel.GetAll().Select(h => new SelectListItem
                 {
                     Text = h.Name,
                     Value = h.Id.ToString()
@@ -37,11 +38,11 @@ namespace HotelCenter.Web.Controllers
         [HttpPost]
         public IActionResult Create(HotelNumberVM hotel)
         {
-            bool roomNumberExists = _context.HotelNumbers.Any(h => h.Hotel_Number == hotel.HotelNumber.Hotel_Number);
+            bool roomNumberExists = _unitOfWork.HotelNumber.Any(h => h.Hotel_Number == hotel.HotelNumber.Hotel_Number);
             if (ModelState.IsValid && !roomNumberExists)
             {
-                _context.HotelNumbers.Add(hotel.HotelNumber);
-                _context.SaveChanges();
+                _unitOfWork.HotelNumber.Add(hotel.HotelNumber);
+                _unitOfWork.Save();
                 TempData["success"] = $"Otel başarılı şekilde eklendi.";
                 return RedirectToAction("Index");
             }
@@ -50,7 +51,7 @@ namespace HotelCenter.Web.Controllers
                 TempData["error"] = "Bu oda numarası zaten mevcut.";
             }
 
-            hotel.HotelList = _context.Hotels.ToList().Select(h => new SelectListItem
+            hotel.HotelList = _unitOfWork.Hotel.GetAll().Select(h => new SelectListItem
             {
                 Text = h.Name,
                 Value = h.Id.ToString()
@@ -63,12 +64,12 @@ namespace HotelCenter.Web.Controllers
         {
             HotelNumberVM hotelNumberVM = new HotelNumberVM
             {
-                HotelList = _context.Hotels.ToList().Select(h => new SelectListItem
+                HotelList = _unitOfWork.Hotel.GetAll().Select(h => new SelectListItem
                 {
                     Text = h.Name,
                     Value = h.Id.ToString()
                 }),
-                HotelNumber = _context.HotelNumbers.FirstOrDefault(h => h.Hotel_Number == hotelNumberId)
+                HotelNumber = _unitOfWork.HotelNumber.Get(h => h.Hotel_Number == hotelNumberId)
             };
             if (hotelNumberVM.HotelNumber == null)
             { 
@@ -82,12 +83,12 @@ namespace HotelCenter.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.HotelNumbers.Update(hotelNumberVM.HotelNumber);
-                _context.SaveChanges();
+                _unitOfWork.HotelNumber.Update(hotelNumberVM.HotelNumber);
+                _unitOfWork.Save();
                 TempData["success"] = "Bungalov başarılı şekilde güncellendi.";
                 return RedirectToAction("Index");
             }
-            hotelNumberVM.HotelList = _context.Hotels.ToList().Select(h => new SelectListItem
+            hotelNumberVM.HotelList = _unitOfWork.Hotel.GetAll().Select(h => new SelectListItem
             {
                 Text = h.Name,
                 Value = h.Id.ToString()
@@ -99,12 +100,12 @@ namespace HotelCenter.Web.Controllers
         {
             HotelNumberVM hotelNumberVM = new HotelNumberVM
             {
-                HotelList = _context.Hotels.ToList().Select(h => new SelectListItem
+                HotelList = _unitOfWork.Hotel.GetAll().Select(h => new SelectListItem
                 {
                     Text = h.Name,
                     Value = h.Id.ToString()
                 }),
-                HotelNumber = _context.HotelNumbers.FirstOrDefault(h => h.Hotel_Number == hotelNumberId)
+                HotelNumber = _unitOfWork.HotelNumber.Get(h => h.Hotel_Number == hotelNumberId)
             };
             if (hotelNumberVM.HotelNumber == null)
             {
@@ -115,11 +116,11 @@ namespace HotelCenter.Web.Controllers
         [HttpPost]
         public IActionResult Delete(HotelNumberVM hotelNumberVM)
         {
-            HotelNumber? hotelToDelete = _context.HotelNumbers.FirstOrDefault(h => h.Hotel_Number == hotelNumberVM.HotelNumber.Hotel_Number);
+            HotelNumber? hotelToDelete = _unitOfWork.HotelNumber.Get(h => h.Hotel_Number == hotelNumberVM.HotelNumber.Hotel_Number);
             if (hotelToDelete is not null)
             {
-                _context.HotelNumbers.Remove(hotelToDelete);
-                _context.SaveChanges();
+                _unitOfWork.HotelNumber.Remove(hotelToDelete);
+                _unitOfWork.Save();
                 TempData["success"] = "Bungalov numarası başarılı şekilde silinidi.";
                 return RedirectToAction("Index");
             }

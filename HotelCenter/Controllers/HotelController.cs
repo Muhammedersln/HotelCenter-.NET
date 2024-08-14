@@ -1,4 +1,5 @@
-﻿using HotelCenter.Domain.Entities;
+﻿using HotelCenter.Application.Common.Interfaces;
+using HotelCenter.Domain.Entities;
 using HotelCenter.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,16 +7,16 @@ namespace HotelCenter.Web.Controllers
 {
     public class HotelController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        
-        public HotelController(ApplicationDbContext context)
+        private readonly IUnitOfWork _unitOfWork;
+
+        public HotelController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            var hotels = _context.Hotels.ToList();
+            var hotels = _unitOfWork.Hotel.GetAll();
             return View(hotels);
         }
         public IActionResult Create()
@@ -27,8 +28,8 @@ namespace HotelCenter.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Hotels.Add(hotel);
-                _context.SaveChanges();
+                _unitOfWork.Hotel.Add(hotel);
+                _unitOfWork.Save();
                 TempData["success"] = $"{hotel.Name} başarılı şekilde eklendi.";
                 return RedirectToAction("Index");
             }
@@ -38,7 +39,7 @@ namespace HotelCenter.Web.Controllers
 
         public IActionResult Update(int hotelId)
         {
-            Hotel? hotel = _context.Hotels.FirstOrDefault(h => h.Id == hotelId);
+            Hotel? hotel = _unitOfWork.Hotel.Get(h => h.Id == hotelId);
             if (hotel == null)
             { 
                 return RedirectToAction("Error","Home");
@@ -51,8 +52,8 @@ namespace HotelCenter.Web.Controllers
         {
             if (ModelState.IsValid && hotel.Id>0)
             {
-                _context.Hotels.Update(hotel);
-                _context.SaveChanges();
+                _unitOfWork.Hotel.Update(hotel);
+                _unitOfWork.Save();
                 TempData["success"] = $"{hotel.Name} başarılı şekilde güncellendi.";
                 return RedirectToAction("Index");
             }
@@ -61,7 +62,7 @@ namespace HotelCenter.Web.Controllers
         }
         public IActionResult Delete(int hotelId)
         {
-            Hotel? hotel = _context.Hotels.FirstOrDefault(h => h.Id == hotelId);
+            Hotel? hotel = _unitOfWork.Hotel.Get(h => h.Id == hotelId);
             if (hotel == null)
             {
                 return RedirectToAction("Error", "Home");
@@ -71,11 +72,11 @@ namespace HotelCenter.Web.Controllers
         [HttpPost]
         public IActionResult Delete(Hotel hotel)
         {
-            Hotel? hotelToDelete = _context.Hotels.FirstOrDefault(h => h.Id == hotel.Id);
+            Hotel? hotelToDelete = _unitOfWork.Hotel.Get(h => h.Id == hotel.Id);
             if (hotelToDelete is not null)
             {
-                _context.Hotels.Remove(hotelToDelete);
-                _context.SaveChanges();
+                _unitOfWork.Hotel.Remove(hotelToDelete);
+                _unitOfWork.Save();
                 TempData["success"] = $"{hotelToDelete.Name} başarılı şekilde silinidi.";
                 return RedirectToAction("Index");
             }

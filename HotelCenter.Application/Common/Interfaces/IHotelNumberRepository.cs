@@ -8,10 +8,10 @@ using HotelCenter.Domain.Entities;
 
 namespace HotelCenter.Application.Common.Interfaces
 {
-    public interface IHotelRepository : IRepository<Hotel>
+    public interface IHotelNumberRepository : IRepository<HotelNumber>
     {
        
-        void Update(Hotel entity);
+        void Update(HotelNumber entity);
        
     }
 }
