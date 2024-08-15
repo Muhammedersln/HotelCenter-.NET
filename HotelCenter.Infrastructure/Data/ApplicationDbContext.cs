@@ -16,6 +16,7 @@ namespace HotelCenter.Infrastructure.Data
 
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<HotelNumber> HotelNumbers { get; set; }
+        public DbSet<Amenity> Amenities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -116,6 +117,67 @@ namespace HotelCenter.Infrastructure.Data
                     HotelId = 3,
                 }
                 );
+
+            modelBuilder.Entity<Amenity>().HasData(
+            new Amenity
+            {
+                Id = 1,
+                HotelId = 1,
+                Name = "Özel Havuz"
+            }, new Amenity
+            {
+                Id = 2,
+                HotelId = 1,
+                Name = "Mikrodalga Fırın"
+            }, new Amenity
+            {
+                Id = 3,
+                HotelId = 1,
+                Name = "Özel Balkon"
+            }, new Amenity
+            {
+                Id = 4,
+                HotelId = 1,
+                Name = "1 king yatak ve 1 çekyat"
+            },
+            new Amenity
+            {
+                Id = 5,
+                HotelId = 2,
+                Name = "Özel Dalma Havuzu"
+            }, new Amenity
+            {
+                Id = 6,
+                HotelId = 2,
+                Name = "Mikrodalga ve Mini Buzdolabı"
+            }, new Amenity
+            {
+                Id = 7,
+                HotelId = 2,
+                Name = "Özel Balkon"
+            }, new Amenity
+            {
+                Id = 8,
+                HotelId = 2,
+                Name = "king yatak veya 2 çift kişilik yatak"
+            },
+
+            new Amenity
+            {
+                Id = 9,
+                HotelId = 3,
+                Name = "Özel Havuz"
+            }, new Amenity
+            {
+                Id = 10,
+                HotelId = 3,
+                Name = "Jakuzi"
+            }, new Amenity
+            {
+                Id = 11,
+                HotelId = 3,
+                Name = "Özel Balkon"
+            });
         }
     }
 }

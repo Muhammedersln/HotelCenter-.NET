@@ -13,11 +13,13 @@ namespace HotelCenter.Infrastructure.Repository
         private readonly ApplicationDbContext _context;
         public IHotelRepository Hotel { get; private set; }
         public IHotelNumberRepository HotelNumber { get; private set; }
+        public IAmenityRepository Amenity { get; private set; }
 
         public UnitOfWorks(ApplicationDbContext context)
         {
             _context = context;
             Hotel = new HotelRepository(_context);
+            Amenity = new AmenityRepository(_context);
             HotelNumber = new HotelNumberRepository(_context);
         }
         public void Save()

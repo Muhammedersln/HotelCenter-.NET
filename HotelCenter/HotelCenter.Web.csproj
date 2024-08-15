@@ -18,4 +18,8 @@
     <ProjectReference Include="..\HotelCenter.Infrastructure\HotelCenter.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\BungalovImage\" />
+  </ItemGroup>
+
 </Project>
