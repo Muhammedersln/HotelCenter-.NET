@@ -1,10 +1,12 @@
 ﻿using HotelCenter.Application.Common.Interfaces;
 using HotelCenter.Domain.Entities;
 using HotelCenter.Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelCenter.Web.Controllers
 {
+    [Authorize]
     public class HotelController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

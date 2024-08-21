@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HotelCenter.Domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace HotelCenter.Infrastructure.Data
 {
-    public class ApplicationDbContext: DbContext
+    public class ApplicationDbContext: IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {
@@ -17,10 +18,11 @@ namespace HotelCenter.Infrastructure.Data
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<HotelNumber> HotelNumbers { get; set; }
         public DbSet<Amenity> Amenities { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Hotel>().HasData(
                 new Hotel
                 {

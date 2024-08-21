@@ -1,6 +1,8 @@
 using HotelCenter.Application.Common.Interfaces;
+using HotelCenter.Domain.Entities;
 using HotelCenter.Infrastructure.Data;
 using HotelCenter.Infrastructure.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,18 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWorks>();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+});
+
+builder.Services.Configure<IdentityOptions>(option =>
+{
+    option.Password.RequiredLength = 6;
+});
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
