@@ -31,5 +31,8 @@ namespace HotelCenter.Domain.Entities
 
         [ValidateNever]
         public IEnumerable<Amenity> HotelAmenity { get; set; }
+
+        [NotMapped]
+        public bool IsAvailable { get; set; }
     }
 }

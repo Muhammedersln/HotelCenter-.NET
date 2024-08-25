@@ -25,6 +25,39 @@ namespace HotelCenter.Controllers
             };
             return View(model);
         }
+        [HttpPost]
+        public IActionResult Index(HomeVM homeVM)
+        {
+            homeVM.HotelList = _unitOfWork.Hotel.GetAll(includeProperties: "HotelAmenity");
+            foreach (var hotel in homeVM.HotelList)
+            {
+                if(hotel.Id % 2 == 0)
+                {
+                    hotel.IsAvailable = false;
+                }
+            }
+            return View(homeVM);
+        }
+
+        public IActionResult GetHotelsByDate(DateOnly checkInDate, int nights)
+        {
+            var hotelList = _unitOfWork.Hotel.GetAll(includeProperties: "HotelAmenity");
+            foreach (var hotel in hotelList)
+            {
+                if (hotel.Id % 2 == 0)
+                {
+                    hotel.IsAvailable = false;
+                }
+            }
+
+            HomeVM homeVM = new()
+            {
+                HotelList = hotelList,
+                CheckInDate = checkInDate,
+                Nights = nights
+            };
+            return PartialView("_HotelList",homeVM);
+        }
 
         public IActionResult Privacy()
         {
