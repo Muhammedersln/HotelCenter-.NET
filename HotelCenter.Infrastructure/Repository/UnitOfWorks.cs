@@ -14,6 +14,8 @@ namespace HotelCenter.Infrastructure.Repository
         public IHotelRepository Hotel { get; private set; }
         public IHotelNumberRepository HotelNumber { get; private set; }
         public IAmenityRepository Amenity { get; private set; }
+        public IBookingRepository Booking { get; private set; }
+        public IApplicationUserRepository User { get; private set; }
 
         public UnitOfWorks(ApplicationDbContext context)
         {
@@ -21,6 +23,8 @@ namespace HotelCenter.Infrastructure.Repository
             Hotel = new HotelRepository(_context);
             Amenity = new AmenityRepository(_context);
             HotelNumber = new HotelNumberRepository(_context);
+            Booking = new BookingRepository(_context);
+            User = new ApplicationUserRepository(_context);
         }
         public void Save()
         {

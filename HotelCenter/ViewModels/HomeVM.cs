@@ -6,7 +6,7 @@ namespace HotelCenter.Web.ViewModels
     {
         public IEnumerable<Hotel>? HotelList { get; set; }
         public DateOnly CheckInDate { get; set; }
-        public DateOnly CheckOutDate { get; set; }
+        public DateOnly? CheckOutDate { get; set; }
         public int Nights { get; set; }
     }
 }

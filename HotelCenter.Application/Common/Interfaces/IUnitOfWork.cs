@@ -11,6 +11,8 @@ namespace HotelCenter.Application.Common.Interfaces
         IHotelRepository Hotel { get; }
         IHotelNumberRepository HotelNumber { get; }
         IAmenityRepository Amenity { get; }
+        IBookingRepository Booking { get; }
+        IApplicationUserRepository User { get; }
         void Save();
       
     }

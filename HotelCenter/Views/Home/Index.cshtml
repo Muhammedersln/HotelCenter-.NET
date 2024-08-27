@@ -39,7 +39,7 @@
 
        
     </div>
-<form method="post" style="background-color:black" asp-action="GetHotelsByDate" data-ajax-method="post" data-ajax="true" data-ajax-mode="replace"
+    <form method="post" style="background-color:black" asp-action="GetHotelsByDate" data-ajax-method="post" data-ajax="true" data-ajax-mode="replace"
       data-ajax-update="#VillasList">
         <div class="row p-0 mx-0 py-4">
 
@@ -53,7 +53,7 @@
             <div class="col-8 col-md-3 pl-2 pr-2">
                 <div class="form-group">
                     <label>Kaç Gece</label>
-                    <select class="form-select">
+                    <select asp-for="Nights" class="form-select">
                         @for(var i = 1; i <= 11; i++)
                         {
                             <option value="@i">@i</option>

@@ -29,16 +29,19 @@
                             <div class="col-4">
                                 @if (Model.CheckInDate > DateOnly.FromDateTime(DateTime.Now))
                                 {
-                                    @if (item.IsAvailable)
+                                    if (!item.IsAvailable)
                                     {
-                                        <a class="btn btn-success form-control btn-block">
-                                            Rezervasyon
+                                        <a asp-controller="Booking" asp-action="FinalizeBooking"
+                                           asp-route-hotelId="@item.Id" asp-route-date="@Model.CheckInDate"
+                                           asp-route-nights="@Model.Nights"
+                                           class="btn btn-success form-control btn-block">
+                                            Book
                                         </a>
                                     }
                                     else
                                     {
                                         <a class="btn btn-outline-danger disabled form-control btn-block">
-                                            Dolu
+                                            Sold Out
                                         </a>
                                     }
                                 }
@@ -68,44 +71,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body m-0">
-
-                            <div class="row">
-                                <div class="col-12 col-md-5">
-                                    <img src="@item.ImageUrl" style="border-radius:10px;" width="100%" />
-                                </div>
-                                <div class="col-12 col-md-7">
-                                    <div class="row p-2">
-                                        <div class="col-12">
-                                            <p class="card-title text-warning" style="font-size:xx-large">@item.Name</p>
-                                            <p class="card-text" style="font-size:large">
-                                                @Html.Raw(item.Description)
-                                            </p>
-                                            @if (item.HotelAmenity != null && item.HotelAmenity.Count() > 0)
-                                            {
-                                                <p class="h5 text-white">Otel Konforları</p>
-                                                <ul>
-                                                    @foreach (var amenity in item.HotelAmenity)
-                                                    {
-                                                        <li>@amenity.Name</li>
-                                                    }
-                                                </ul>
-                                            }
-                                        </div>
-                                    </div>
-                                    <div class="row col-12">
-                                        <span class="text-end p-0 pt-3 m-0">
-                                            <span class="float-right">Max Doluluk : @item.Occupancy Yetişkin </span><br />
-                                            <span class="float-right pt-1">Büyüklüğü : @item.Sqft MetraKare</span><br />
-                                            <p class="text-warning font-weight-bold pt-1">
-                                                TRY
-                                                <span style=" #ff6a00">
-                                                    @item.Price.ToString("c") / gecelik
-                                                </span>
-                                            </p>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
+                            <partial name="_HotelDetail" model="@item" />
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Kapat</button>
